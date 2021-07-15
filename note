@@ -1,0 +1,629 @@
+for(let [key,value] of arr) //循环,可以获取key,value
+
+split(',') //字符串按照 ，切割成数组（字符串=>数组）
+
+join(',') //将数组中所有元素拼接 , 成为字符串 (数组=>字符串)
+
+sort((a,b))//排序包括字符串数字
+
+项目中什么时候用到flex布局
+
+掌握盒子模型垂直居中的五大方案
+
+css的盒子模型 标准盒子模型(最终width = width+margin+padding+border) 怪异盒子模型(box-sizing:border-box; width是多少,最终宽度就是多少)
+            flex伸缩盒子模型
+
+掌握几大经典布局方案
+
+实现一个symbol
+
+#继承的几种方式以及各自的优缺点
+答:1.原型链继承,将父类作为子类的原型继承(children.prototype = new Parent()).优点是代码相对简单,缺点主要有:子类实例共享父类所有属性的值;创建子类时无法向父类传参;
+2.借用构造函数继承,使用call或者apply方法继承父类.优点是实现简单,解决了父类属性值共享的问题,可以向父类传参,缺点是无法继承父类原型的方法;实例并不是父类的实例,只能是子类的实例.
+3.组合继承,同时使用原型链继承和构造函数继承.结合了两者的优点.注意重置子类构造函数的指向(children.prototype.constrctor = children)
+
+#_proto_和prototype的区别
+答:一个是隐式原型一个是显式原型._proto主要用于一个子类无找到对应方法的时候,一直向父类中的_proto_寻找对应的方法.prototype是用于原型链继承(children.prototype = parent.prototype;children._proto = parent.prototype);
+    prototype是类/constrctor的原型. _proto_是对象的原型.
+
+#call/apply/bind的区别
+答:call和apply的作用差不多,区别是传参不同.call在非严格模式下传递2个参数(this,a,b),如果所有参数为空默认指向window;严格模式下参数不传则指向undefined.
+  apply传参(this,[a,b]).传递参数用数组形式传.
+  bind传参和call相同,但是返回是方法不会自动执行(parent.bind(children)())
+
+#cookie/localstorage/sessionstorage区别
+
+#slice
+答:slice(2),截取index= 2到结尾,返回一个新数组;slice(2,4)截取index = 2 到 index = 3
+
+#变量提升和函数提升
+答:函数提升优先于变量提升.函数声明不会被变量声明覆盖.但是变量赋值后会覆盖函数
+
+#执行上下文的执行栈
+
+#讲讲闭包
+答:能够访问其他函数内部的函数叫做闭包.因为js的垃圾回收机制会把已经出栈的属性进行回收,闭包函数会一直引用被引用函数的属性值以至于属性值不被回收.因此闭包会常驻内存,滥用闭包可能会引起内存泄露.
+   为什么使用闭包?匿名自执行函数;对结果的缓存,刚讲到闭包不会被垃圾回收,所以能直接对缓存进行调用而不需要再次执行函数.
+
+#对象的拷贝
+答:对象的拷贝有深拷贝和浅拷贝.浅拷贝的实现通常是用扩展运算符和Object.assign()实现.浅拷贝出来的对象和被拷贝对象指向的是同一内存.所以当一个对象里的值改变了也会同时影响另一个对象.
+    深拷贝的常用方法有JSON.Stringfy(JSON.parse()).此方法的缺点是无法转译部分date/正则等;还有一个方法是递归进行递归赋值.
+
+#new运算符的执行过程
+答:1.声明一个空对象 2.obj._proto_ = parent.prototype 3.绑定object的this指向(parent.call(object)) 4.判断parent类型并返回新对象
+
+#instanceof原理
+答:(a instanceof b),判断a的原型链是否在b的prototype上.是返回true 否则false
+
+#toLowerCase
+答:将字符串转为小写
+
+#模块化
+答:提高代码的可维护性,可复用性,利于协同开发,提高代码开发效率.require和import的区别.require为同步引入,import是异步引入.require是值拷贝,不会影响导入值.import是指向同一内存地址,会改变导入值.
+
+#防抖和节流
+答:防抖主要控制次数;节流主要控制频率;防抖主要场景有防止表单多次重复提交,页面在拖动触发resize事件后重复渲染等场景. 节流主要用在同一时间段重复触发同一时间,控制输出频率.
+   //防抖函数 debounce
+   function debounce(){
+       let timeout = null;
+       clearSettimeout(timeout)
+       timeout = setTimeout(()=>{
+           //todo
+       },1000)
+   }
+   //节流函数 throttle
+   function throttle(){
+       let valid = true;
+       return function(){
+           if(!valid){
+               return false;
+           }
+           valid = false;
+           setTimeout(()=>{
+               //todo
+               valid = true;
+           },1000)
+       }
+   }
+
+   #es6 es7
+
+   #babel编译原理
+   答:babel通过babel-babylon把代码编译成的AST;babel通过babel-traverse,用配置好的plugin和preset对AST进行配置,生成新的AST;babel通过babel-generator将新AST编译成es5代码
+
+   #函数科里化
+   答:函数科里化是在函数中填写几个参数,然后返回新的函数的技术,成为函数科里化.通常作用于在不侵入函数的前提下,为函数预设参数,供多次重复调用.
+    eg:
+        const add = function(x){
+            return function(y){
+                return x+y
+            }
+        }
+        const add1 = add(1);
+        add1(2) === 3;
+        add1(9) === 10;
+
+   #Get请求参数长度误区
+   答:HTTP协议未规定GET请求参数长度.参数长度主要是因为web服务器和浏览器限制了URI的长度.不同浏览器的限制长度不一样
+
+   #GET POST区别
+   答:GET请求一般用于请求可以缓存的数据,如图片等.POST一般用来增删改数据.GET请求一般会在URL体现,参数以query形式拼接在url中.post一般把请求参数放在body中.
+    参数长度一般post较长.安全性post较高,不会把请求参数暴露在url中.GET请求发出一次TCP包(data,headre一并发出),POST产生2个tcp包(先发送header,返回100continue,发送body数据,返回200),
+    但是其实http协议并没有规定GET请求不能在body发送参数,也没有规定POST不能在url拼接参数.更多的在HTTP协议中,他们的最大区别其实是语义化上的区别.其他区别都是约定俗成的东西/
+
+   #如何解决异步的回调地狱
+   答:await async
+
+   #任务队列 事件循环机制 
+
+   #说说前端中的事件流
+    答:html和js的交互是通过事件驱动完成的.例如鼠标的点击事件,滚轮事件.事件流描述的是从页面中接受事件的顺序:1.事件捕获阶段;2.处于目标阶段;3.事件冒泡阶段.
+        addEvenListener是DOM2级事件新增指定事件处理的操作.这个方法接收3个参数(1.事件名 2.处理函数的程序 3.布尔值) 如果布尔值为true说明在捕获阶段处理事件;false为冒泡阶段处理.
+        不支持冒泡的事件有resize.scroll/mouseenter/mousemove等.
+        事件委托(事件代理)指的是,通过事件冒泡,在被所委托的一系列事件,委托到事件父级,把事件绑定到父级.例如ul里面有若干个li,所有li需要绑定方法.事件委托把li事件绑定
+        到ul上.
+
+    #如何做到事件先冒泡再捕获.
+    答:机制决定了事件为先捕获再冒泡.应该说是先处理事件的冒泡,再处理回调事件的捕获.可以用settimeout的方法,先把冒泡回调放入第一个宏任务中,再把捕获回调放到第二个
+        宏任务中.
+
+    #说说图片的懒加载和预加载
+    答:预加载是提前加载图片,当用户需要图片的时候可以访问已经缓存好的图,不需要进行加载;懒加载是相反的,在用户不需要图片是暂时不加载图片,等需要的时候再进行加载.
+        懒加载可以减少服务器压力,预加载则能提升用户的感知
+    
+    #JS实现拖拽
+    答:通过mousedown,mousemove,mouseleave.H5可通过drag/drop方法.
+
+    #异步加载js的方法
+    答:h5有defer和async方法,实现js的异步加载.defer的优先级较高,会在页面完成时加载.
+
+    #JS中的垃圾回收机制
+    答:常见是标记删除.JS记录变量状态为进入环境or离开环境.如果是离开环境的变量进行删除释放内存.另外还有计数删除.计数删除是计算变量被引用的次数
+
+    #eval是做什么的
+    答:把字符串解析成js并执行.比较消耗性能(解析成js,然后执行)
+
+    #用node做devops的重要性
+
+    #说一下CommonJS/AMD和CMD
+    答:三种都是JS模块的规范.CommonJs最初用在nodeJS上,通过require引入,通过export输出.加载为同步加载,需要在作用代码前引入.
+        AMD是异步模块加载,代表是requireJS
+        CMD也是异步模块加载,代表是SeaJS
+        AMD和CMD区别,AMD是预加载.CMD是懒加载.
+
+
+    #实现一个once函数
+    答:
+    function a(){console.log('abc')}
+    function once(fn){
+        let valid = true;
+        return function(){
+            if(valid){
+                valid = !valid
+            }
+            fn()
+        }
+    }    
+    const todo = once(a)
+    const todo1 = todo()
+    todo1
+    todo1
+
+    #JS监听对象属性的改变
+    答:ES5可以用Object.defineProperty;ES6可以用proxy方法
+        object.defineProperty(user,'name',{
+            set:function(val){
+                console.log('name =>' val)
+            }
+        })
+        let proxy = new Proxy({},handle)
+        const handle = {
+            get:function(target,name){
+
+            }
+        }
+
+    #如何实现一个私有变量，用 getName 方法可以访问，不能直接访问    
+
+    #JS中==、===和Object.is()的区别
+    答:==会做类型转换后进行比较;===不做类型转换直接进行比较;object.is()和===差不多,但是+0!=-0,NaN == NaN
+
+    #settimeout setInterval requestAnimationFrame的区别
+    答:settimeout和setInterval都是在一定时间内把事件推到宏任务队列中,需要设定时间频率.而且因为只是把事件推到红任务队列,如果UI线程太忙的话会导致时间频率不准确,并且在隐藏不可见
+        的元素中也会执行该事件.
+        requestAnimationFrame不需要设定时间频率参数,在隐藏不可见的区域不执行,节省性能
+
+    #实现一个bind函数
+    答:
+        const bind = ()=>{
+            let that = this;
+            return function(){
+                that.call(arguments)
+            }
+        }
+
+    # js 怎么控制一次加载一张图片，加载完后再加载下一张
+    答:let obj = new Image();
+       obj.onload = () =>{
+           //TODO
+       }    
+
+    #Function.getPrototypeOf
+    答:ES6中新增的方法,等价于Function._proto_
+
+    #this指向
+    答:谁调用的方法,this就指向哪个对象.
+        1.自执行的匿名函数this指向window,settimeout等函数this指向window,闭包
+        2.全局声明的let,不指向window
+        3. var a = b.c.fn() a(),this指向window  \
+        4.apply,call的this指向参数里面的对象,对箭头函数无影响
+        5.构造函数调用,this指向new实例化对象
+        6.函数赋值会改变this指向.
+        7.函数内部调用其他函数会改变指向.
+        8.注意区分this.val 和 val(函数未定义会去全局找)的问题
+        9.箭头函数的this指向最近一层父级非箭头函数的this
+
+    #什么是arguments
+    答:arguments用来获取函数的参数.以数组对象存在.比如arguments[0]则获取第一个参数.arguments.callee可用来做递归    
+
+    #JS的判断类型
+    答:typeof() instanceof() 
+
+    #JS数组常用方法
+    答:push pop shift unshift reverse sort map forEach filter Every
+        map: //不改变元素组,返回新数组
+            let arr = [1,2,3,4,5]
+            let newArr = arr.map(x=>x*2)
+        forEach: //改变原数组
+            let arr = [1,2,3,4,5]
+            arr.forEach(i=>i*2)    
+        filter: //过滤数组,返回一个新数组
+            let arr = [1,2,3,4,5]
+            const bigEnough = val => val>=3 
+            let newArr = arr.filter(bigEnough)   
+        every: //判断数组所有元素是否满足条件,返回true or false
+            let arr = [1,2,3,4,5]
+            const boo = val => val<6    
+            const boo2 = val => val<2
+            arr.every(boo) //true    
+            arr.every(boo2) //false    
+        push://
+        pop://
+        shift: // 从数组头部删除一个元素
+        unshift: // 插入到第一个元素    
+        concat: //拼接2个数组
+        join: //数组转成字符串,中间插入某字符串
+        splice: // splice(index,len,insert)
+
+    #JS中去重的方法
+    答:ES6中常用Array.from(new Set(arr));ES5中常用双循环一一对比;还能排序后(sort((a,b)=>a-b))后,循环进行一一对比去重.
+
+    #说说TCP三次握手四次挥手
+    答:
+
+    #输入url到获取html页面的过程
+    答:1.通过dns查询,查询到域名相应的ip地址.
+        2.通过3次握手建立TCP连接.
+        3.发送hTTP请求.
+        4.目标服务器收到HTTP请求并开始处理.
+        5.目标服务器向浏览器发送http相应.
+        6.浏览器解析渲染页面.
+
+    #前端性能优化
+    答:从数据请求层面:减少http请求,使用cdn;从html层面,合理运用服务端渲染:优化dom结构,css引入放在html头部,js引入放在html尾部(可用async,defer);从css层面:尽量避免使用css表达式,合理使用动画;
+        从js角度:合理使用闭包防止内存泄露,合理使用节流防抖方法;从图片加载角度:压缩图片,图片懒加载,使用sprite图;从框架选型:vue3,使用webpack,gulp等自动化构建工具
+
+    #如何判断是否是数组
+    答:1.instanceof  2.object.prototype.toString.call(arr) 3.Array.isArray(arr)
+
+    #JS的数据类型
+    答:五种基本数据类型+一种复杂数据类型
+        null/undefined/number/string/boo
+        object(引用数据类型:function/Array/object)    
+        ES6新增symbol
+
+    #什么是跨域,怎么解决跨域
+    答:
+    跨域是由于同源策略不同引起的限制跨域请求.限制包括cookie/localstorage/indexDb/ajax请求等.同源策略指的是域名/端口/协议
+    解决跨域的方法主要有
+    1.使用jsonp(缺点只能使用get)
+    2.通过iframe
+    3.跨域资源共享(CORS),前端可能需要设置cookie共享(withCredential),后端需要配置
+    4.nodejs可配置middleware/webpack可配置proxy
+
+    #什么是回流和重绘
+    答:重绘是指元素外观改变而出发的浏览器行为,浏览器根据元素新属性重新绘制(background-color/color)
+       回流是指元素的尺寸/布局/隐藏等,页面渲染至少要一次回流(在第一次加载时).
+       回流的时候会触发重绘
+
+    #暂停性死区
+    答:在代码块内,如果存在let const 在声明变量之前该变量都是不可用的.   
+
+    #什么是virtual dom
+    答:是一个用对象结构写的dom树,多用在vue和react中渲染dom节点.以及一些框架入antd,里面有很多有很多组件数据结构都是virtual dom.
+
+                                    ---webpack---
+
+    #前端为甚么要进行打包构建?
+    答:开发阶段:编译更高级语言语法(less/ES6/TS);更快知道报错;统一开发环境等.
+
+    #module/chunk/bundle?
+    答:webpack中所有文件都是module;chunk是module的集合;bundle是最终的输出文件.
+
+    #babel和webpack?
+    答:webpack是打包构建工具,是多个loader和plugin的集合.
+        babel对模块打包不感兴趣,只进行语法转译.
+
+    #webpack gulp grunt区别
+    答:三者都是前端构建工具,gulp/grunt差不多,都是需要配置一系列task文件,前端文件以task流进行构建.比如我比较熟悉的工作流tmt-workflow就是基于gulp.一般用来开发一些静态
+        项目.优势是能够编译less/sass;配置代理;渲染ejs;实现热更新等功能.而这些功能都是需要配置task的. gulp和grunt相对webpack较为轻量.
+      webpack则常用来开发模块化的项目.比如vue和react.  
+
+    #loader是什么?
+    答:因为webpack只能处理js文件.对其他类型文件处理需要loader进行翻译处理.翻译完再交给webpack;通常在webpack.config.js进行配置;常用的loader有less-loader(scss)/babel-loader
+        eslint-loader 
+        在module.rules进行配置
+    #plugin和loader的区别
+    答:
+    loader是模块转换器
+    plugin是扩展插件
+    在webpack在特定时间会广播出一系列事件,plugin在特定的时期能够监听到相应事件,并进行处理.
+
+    #什么是事件监听?
+    答:addEventListener()方法,addEventListener(event,function,boo)
+        event:事件例如(click,mouseenter)
+        function://todo
+        boo:true代表捕获,false代表冒泡
+
+    #let const var有什么区别?如何在ES5中实现块级作用域?
+    答:let const是ES6新出的声明变量的方法,var声明的作用域是全局的或者是函数块的;let/const声明的作用域是代码块.var存在变量提升.
+        在ES5中实现块级作用域主要是用匿名函数.  
+
+    #箭头函数的特性?
+    答:箭头函数没有自己的this,它的this指向其最近一层非箭头函数父级的this;箭头函数没有arguments参数,取而代之的是rest方法(扩展运算符  (...arguments));箭头函数内
+        无法使用call/apply/bind方法.   
+        箭头函数无法作为构造函数使用.
+
+    #JS获取对象key的方法?
+    答:
+    1.Object.key()  返回对象key的数组
+    2.Object.getOwnPropertyName() 返回不可枚举对象key数组
+    3.for(var i in Object) 
+
+    #简单说一下ES6的新特性
+    答:
+        ES6新增了let const声明变量方法.之前var声明变量的作用域为函数作用域或者全局作用域,let const声明的变量为代码块作用域
+        ES6新增了箭头函数,函数入参/this指向/返回值更加简洁.
+        ES6新增很多处理数组和对象的方法(forEach/map/filter/Object.assgin/扩展预算符)
+        ES6新增promise async await方法解决了回调地狱的问题.
+        ES6新增Class,使得继承更简洁,更好的面向对象编程.
+
+    #call/apply/bind方法作用?
+    答:改变this指向/借用其他函数的方法.
+
+    #堆/栈的理解
+    答:栈为栈内存,堆为堆内存.    
+        基本数据类型存在栈中.引用数据类型存在堆中.
+    
+    #如何做到cookie隔离?
+    答:把静态文件放在cdn/用cookie free domain
+
+    #渐进增强与优雅降级
+    答:渐进增强指的是一开始开发的时候先针对低版本构建开发,再兼容高版本浏览器
+        优雅降级指的是先按照高版本浏览器进行开发,再兼容低版本浏览器.
+
+    --------------浏览器-------------
+    #标签页之间通讯?
+    答:在一个页面用setInterval不断轮询cookie的变化.
+        监听storage变化 
+            window.addEventListener('storage',(e)=>console.log(e))    
+
+    #如何减少回流和重绘?
+    答:1.避免写行内样式,尽量用类名进行批量修改.
+        2.绝对定位的dom不会造成大量的回流.
+        3.避免滥用div和p标签.减少dom结构嵌套.
+
+    #一个衣蛾面输入url到页面加载完成,整个过程进行简述?
+    答:进行dns解析,找到域名相应的ip.然后建立tcp,http.浏览器向服务器发送请求.服务器收到请求相应并返回数据.浏览器就收到数据渲染页面.            
+
+    #浏览器如何阻止事件传播,阻止默认行为,消除冒泡.
+    答:阻止默认行为,preventDefault
+        阻止时间传播,preventPropagation
+        防止冒泡,cancelBubble
+
+    #虚拟dom和原生dom对比有什么优点,实现是什么原理?
+    答:原生dom一旦修改某节点,会引起全局重新渲染(回流重绘).虚拟dom通过diff算法,只对修改的dom进行局部刷新.
+
+    #什么是diff算法?
+    答:diff算法把vnode编译成正式的dom,如果dom修改了,那么就对新旧vnode进行对比,部分渲染.
+
+    #浏览器缓存机制?
+    答:浏览器缓存机制,就是把浏览器已经请求过的数据存储下来,等下次需要该资源时,浏览器会根据缓存机制决定直接使用缓存资源还是再次请求资源.
+
+    #多路复用?
+    http在请求页面的时候,每一次请求都必须建立一次tcp,http链接.这个阶段比较浪费时间. 多路复用就是同一域名下多次请求数据,只建立一次http请求     
+
+    #http和https
+    答:https相对于http加入了ssl层,加密传输
+        http是80端口,https是443端口.
+
+    #简述浏览器渲染过程?
+    答:浏览器把html和css解析成dom tree和css tree.然后2者合并生成render tree,通过painting渲染.
+
+    #什么是XXS 和 CSRF攻击?
+    答:XXS攻击即是把脚本注入到服务器或者代码中.把网页重定向到其他网页上.
+        CSRF攻击即是攻击者伪造成用户身份恶意发送请求.    
+
+    #如何防范CSRF XXS?
+    答:使用token.    
+        xxs对注入内容进行转译,过滤等.
+
+    #DDOS攻击,如何防范?
+    答:ddos攻击是恶意消耗系统服务器资源,导致服务器崩溃的一种攻击方式.在服务器设置防火墙,黑名单ip,保证服务器带宽等..
+
+    -----vue
+    #vue双向绑定原理?
+    答:vue是通过Object.defineProperty方法监听对象属性值,通过set get方法实现watcher obverser 和解析器实现.
+        obverse负责监听值改变.watcher相应并执行相应方法.
+
+    #vue的声明周期
+
+    #vif v-show
+    答:v-show是控制样式,即display. v-if是控制dom是否渲染.v-show性能更高,方便来回切换    
+
+    #vue nextTick
+    答:数据更新后进行dom操作需要在nextTick方法中执行,因为vue的dom更新是异步的
+
+    #vue中的data为什么是一个函数不是一个对象
+    答:因为data为函数的话,不同实例组件不会互相影响.
+
+    #v-for的优先级比v-if高
+
+    #keepalive组件的作用.
+    答:keepalive能让组件进行缓存,而不进行销毁和从小注册.比如有一个列表一个详情页,业务逻辑需要来回切换,那么久可以把2个组件keepalive.以至于不需要重新渲染
+
+    #vue的动态组件
+    答:添加if属性.
+
+    #vue和juqery的区别
+    答:vue更侧重于数据操作.jquery更侧重于dom操作.jquery适合写一些样式花俏的动画H5.vue适合写一些后台系统
+
+    #vue如何配合webpack按需加载
+    答:有require.ensure方法
+
+    #vue和react对比
+    答:vue使用的是template/react使用的是jsx语法.vue会跟踪每个组件的依赖关系,数据改变并不需要重新渲染整个组件树.react状态被改变,会重新渲染整个组件树,可以通过
+        shouldComponentUpudate控制.state对象在react中是不可变的,需要使用setstate去改变.vue中,state不是必须的,vue有自己的data属性.
+
+    #vue中key的作用?
+    答:给dom节点设置唯一值,避免重新渲染虚拟dom
+
+    #数组扁平化?
+    答:
+        let arr = [1, 2, 3, [4, 5]]
+
+        方法1.
+        arr.join(',').split(',').map(item=>parseInt(item))
+
+        如果是二维数组,可用arr.flat()
+
+        还有递归concat数组.
+
+    #冒泡算法
+    答: var arr = [20,14,31,22,2,9,66,10]
+        for(var i =0;i<arr.length;i++){
+            for(var j = i+1;j<arr-i-1;j++)
+            if(arr[i]>arr[j]){
+               let part = arr[i]
+               arr[i] = arr[j]
+               arr[j] = temp     
+            }
+        }
+    
+        console.log(arr)
+
+    #订阅发布者函数
+    答:
+
+    Class EventEmitter{
+   constructor(){
+      listener:{}
+   }
+   //订阅者
+   on(type,fn){
+      if(!this.listener[type]){
+         this.listener[type] = []
+      }
+      this.listener[type].push(fn)
+   }
+   //发布者
+   emit(type,...args){
+      if(this.listeners[type]){
+         this.listener[type].forEach(item=>{
+            item(...args)
+         })
+      }
+   }
+   //删除事件
+   off(type){
+      if(this.listener[type]){
+         delete this.listeners[type]
+      }
+   }
+}
+
+    #rem em
+    答:em是根据当前字体大小百分比设置,rem是根据html字体大小百分比设置
+
+    #websocket
+    答:传统http协议只能客户端发起请求.如果服务端数据需要更新则需要在客户端做轮询.
+        websocket能在服务端发起请求.没有同源策略限制
+
+    #webpack热更新原理?
+    答:webpack会起一个本地服务,然后通过websocket,只要有修改的文件,webpack监听到后,客户端向服务端发送请求更新代码.
+
+    #webpack常用插件?
+    答:热更新模块 dev-server
+        压缩代码uglify模块
+
+    #webpack路由懒加载
+    答:可以使用drymatic插件,也可以使用require的ensure方法.   
+
+    #webpack提取公共模块?
+    答:webpack有相关插件,webpack-commonPlugins
+
+    #简单说下webpack原理?webpack有什么用
+    答:webpack能够统一开发环境,能够把不同的语法编译成相应的js,通过plugin能够实现项目的跨域配置,压缩代码,热更新等等.
+        webpack把不同语法的js(ts,es6),css(less,scss)编译成js,通过loader和plugin,打包编译成js
+
+    #如何使低版本的浏览器（如IE8等）支持新的语言特性
+    答:这个我知道的有相应的插件可以使用.
+
+    #JS为什么是单线程？这样做有什么好处是多线程语言无法实现的？
+    答:因为js单线程可以解决掉两个同时的异步代码同时执行矛盾的事件所造成的问题.比如两个异步事件同时处理一个dom.
+
+    #了解浏览器缓存吗？协商缓存，强缓存什么是什么，如果两个同时存在，先执行哪个?
+    答:协商缓存是客户端和服务器协商缓存.主要有两种协商
+        1.客户端请求资源,服务器返回last-modify在返回头.代表数据最后在服务器被更新的时间.  等下次客户端再次请求相同资源时,如果有last-modify字段则在请求头
+            加上if-modify-since字段.如果if-modify-since字段和服务端last-modify不一致则重新发送请求,否则返回304,从浏览器缓存直接读取数据.
+        2.客户端拿到服务端返回的etag值,与服务器的if-none-match做匹配,如果一致返回304,直接从浏览器获取缓存,否则重新进行请求.
+
+       强缓存指的是客户端的expire和cacheContorl属性,如果expire时间是在请求时间内的话则直接获取缓存,否则重新请求.
+       cacheContorl是一个相对时间,如果请求时间在时间内的话直接获取缓存.
+
+       获取缓存是先看有无强缓存,如果有直接获取缓存,否则查询协商缓存.     
+
+    #返回状态码304 是什么缓存。Etag 是什么，内容是什么
+    答:协商缓存,etag是一串hash值,用来和服务端做匹配用. modify的值只能精确到秒.而etag值是唯一的.
+
+    #CDN?
+    答:如果客户端在北方请求南方的服务端,那么数据就会有延迟.cdn好比一个服务端的分店,在北方也设有分店.所以直接请求可以获取到cdn的资源(加快).
+
+    #xxs和cros?
+    答:xxs是脚本注入攻击.解决办法是对注入的脚本进行转译.
+        csrf(cross-site-request-forgery),跨域请求伪造攻击,是值冒充用户的登陆信息,在请求中携带用户的cookie,对资源进行访问.,解决办法是使用token进行用户身份判断.
+
+    #函数式编程优点?
+    答:函数式编程个人愚见.函数式编程的优点有,可预见性,可缓存性.
+        比如一个数据被N个组件引用,每个组件都可以独立修改这个数据,如果这数据变得不合理,那么debug就会变得困难.
+            函数式编程内,如果需要对这个数据进行修改,那么请声明一个新的变量,debug就变得可追溯
+        可预见性
+            比如[1,2,3].用slice方法,slice(0,3),无论操作多少次返回的一定是相同的答案.这就是函数式编程
+            但是用splice返回就不是一个相同的值.
+        可缓存性
+            比如函数科利化,就是把方法设定默认参数.返回固定的值.       
+
+    #纯函数?
+    答:纯函数就是指,固定的输入会输出固定的值.输出的值不受外部影响. 比如arr.split 输出的值会一次改变.但arr.slice的值不会改变.                
+
+    #捕获,冒泡机制顺序?
+    答:addEventListener 参数是true则为捕获.false则为冒泡.机制是先捕获再冒泡.
+
+    #实现call函数?
+    //call
+    Function.prototype.call = function(context,...args){
+        context = context || window;
+        context._proto_.fn = this;
+        var res = context.fn(...args)
+        delete context._proto_.fn;
+        return res;
+    }
+
+    //动画的开始和结束判断
+    答:dom.addEventListener('animationstart',function(){
+
+    },false)
+    dom.addEventListener('animationend',function(){
+        
+    },false)
+
+    //http https
+    答:http是80端口,https是443端口.
+        http是明文传输.https是ssl加密传输
+
+    //对称加密 非对称加密    
+    答:对称加密加密和解密都是用的同一把密钥.非对称加密,在加密过程用的是公钥,在解密过程用的是私钥.
+        对称加密比非对称加密节省性能.
+
+    //SSL协议
+    答:所有信息都是加密传输,第三方无法窃取.
+        具有校验机制,一旦被篡改,通信双方会发现.
+        配备身份证书,防止身份被冒充    
+
+    //会话密钥,预主密钥
+
+    //SSL加密过程?
+    答:客户端向服务端发送一个随机数/加密算法. 
+        服务端向客户端发送一个随机数2/和匹配的加密算法.
+        服务端向客户端发送证书
+        客户端验证证书
+        客户端形成预主密钥,结合随机数12生成会话密钥.
+        客户端通过公钥对预主密钥进行加密,发送给服务端.
+        服务端通过私钥,对预主密钥进行解密.
+        服务端通过私钥对预主密钥进行解密.
+        服务端结合预主密钥,随机数12,生成会话密钥.
+        双方双向校验会话密钥
+
+    //HTTP的长连接和多路复用?
+    答:长连接是HTTP1.1新增的,功能是,对同一域名的同一文件进行访问的时候,TCP保持链接状态.
+        多路复用指的是,对同一域名的不同文件,可以复用一个TCP链接.原理是HTTP2引入流的概念.    
